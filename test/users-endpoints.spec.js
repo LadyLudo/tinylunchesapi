@@ -200,7 +200,7 @@ describe('PATCH /api/users/:id', () => {
                 .send({ irrelevantField: 'foo' })
                 .expect(400, {
                     error: {
-                        message: `Request body must contain either 'password', 'display_name', or 'username'`
+                        message: `Request body must contain either 'password' or 'username'`
                     }
                 })
         })

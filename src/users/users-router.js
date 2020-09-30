@@ -89,7 +89,7 @@ usersRouter
         if (numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either 'password', 'display_name', or 'username'`
+                    message: `Request body must contain either 'password' or 'username'`
                 }
             })
         }
