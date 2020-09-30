@@ -56,9 +56,7 @@ usersRouter
         )
             .then(user => {
                 if(!user) {
-                    return res.status(404).json({
-                        error: { message: `User doesn't exist` }
-                    })
+                    return res.status(204).end()
                 }
                 res.user = user
                 next()
@@ -101,7 +99,6 @@ usersRouter
                 const hashedUser = {
                     password: hashPass
                 }
-                console.log(hashedUser, "hashedUser")
                 UsersService.updateUser(
                     req.app.get('db'),
                     req.params.id,
@@ -127,28 +124,6 @@ usersRouter
     })
 
 usersRouter
-    .route('/searchByUsername/:username')
-    .all((req,res,next) => {
-        UsersService.getByUsername(
-            req.app.get('db'),
-            req.params.username
-        )
-            .then(user => {
-                if(user) {
-                    return res.status(404).json({
-                        error: { message: `User already exists` }
-                    })
-                }
-                res.user = user
-                next()
-            })
-            .catch(next)
-    })
-    .get((req,res,next) => {
-        res.json()
-    })
-
-usersRouter
     .route('/login/userAuth')
     .all((req,res,next) => {
         UsersService.userAuth(
@@ -158,9 +133,7 @@ usersRouter
         )
             .then(user => {
                 if(!user) {
-                    return res.status(404).json({
-                        error: { message: `User doesn't exist` }
-                    })
+                    return res.status(204).end()
                 }
                 res.user = user
                 next()
