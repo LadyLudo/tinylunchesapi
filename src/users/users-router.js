@@ -168,16 +168,16 @@ usersRouter
             .catch(next)
     })
     .get((req,res,next) => {
-        if (bcrypt.compare(req.query.password, res.user.password)){
-            res.json({
-            user_id: res.user.user_id,
+        bcrypt.compare(req.query.password, res.user.password, function(err, result) {
+            if(result == true){
+                res.json({
+            id: res.user.id,
             password: res.user.password,
-        })
-        } else{
-            res.status(200).send('password does not match')
-        }
-
-        
+                })
+            } else {
+                res.status(200).send('password does not match')
+            }
+})
     })
 
 module.exports = usersRouter
