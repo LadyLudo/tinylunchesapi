@@ -43,14 +43,6 @@ const UsersService = {
         .where({ id })
         .update(newUserFields)
     },
-
-    userAuth(knex, username) {
-        return knex
-          .from('users')
-          .select('id', 'password')
-          .where('username', username)
-          .first()
-      },
   }
   
   module.exports = UsersService

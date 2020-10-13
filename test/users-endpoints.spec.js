@@ -20,7 +20,7 @@ let db
 
     afterEach('cleanup', () => db('users').delete())
 
-describe.only('GET /api/users', function() {
+describe('GET /api/users', function() {
         context('Given no users', () => {
             it('responds with 200 and an empty list', () => {
                 return supertest(app)
