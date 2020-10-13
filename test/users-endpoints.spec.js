@@ -2,8 +2,7 @@ const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../src/app')
 const supertest = require('supertest')
-const { makeUsersArray } = require('./users.fixtures')
-const bcrypt = require('bcrypt')
+const helpers = require('./test-helpers')
 
 let db
 
@@ -21,7 +20,7 @@ let db
 
     afterEach('cleanup', () => db('users').delete())
 
-    describe('GET /api/users', function() {
+describe.only('GET /api/users', function() {
         context('Given no users', () => {
             it('responds with 200 and an empty list', () => {
                 return supertest(app)
@@ -30,7 +29,7 @@ let db
             })
         })
         context('Given that there are users in the database', () => {
-            const testUsers = makeUsersArray()
+            const testUsers = helpers.makeUsersArray()
     
             beforeEach('insert users', () => {
                 return db
@@ -58,7 +57,7 @@ describe('GET /api/users/id', () => {
         })
     })
     context('Given there are users in the database', () => {
-        const testUsers = makeUsersArray()
+        const testUsers = helpers.makeUsersArray()
         
         beforeEach('insert users', () => {
             return db  
@@ -130,7 +129,7 @@ describe('DELETE /api/users/:user_id', () => {
     })
 
     context('Given there are users in the database', () => {
-        const testUsers = makeUsersArray()
+        const testUsers = helpers.makeUsersArray()
         
         beforeEach('insert users', () => {
             return db  
@@ -164,7 +163,7 @@ describe('PATCH /api/users/:id', () => {
     })
 
     context('Given there are users in the database', () => {
-        const testUsers = makeUsersArray()
+        const testUsers = helpers.makeUsersArray()
         
         beforeEach('insert users', () => {
             return db  
@@ -228,48 +227,5 @@ describe('PATCH /api/users/:id', () => {
                         .expect(200)
                 )
         })
-    })
-})
-
-describe('GET /api/users/userAuth', () => {
-    context('Given no users', () => {
-        it('responds with 204', () => {
-            const user_name = 'testusername@gmail.com'
-            const password = 'testpassword'
-            return supertest(app)
-                .get(`/api/users/login/userAuth`)
-                .query({ username : user_name, password: password })
-                .expect(204)
-        })
-    })
-
-    context('Given there are users in the database', () => {
-        const testUsers = makeUsersArray()
-        
-        beforeEach('insert users', () => {
-            return db  
-                .into('users')
-                .insert(testUsers)
-        })
-
-        it('Responds with 200 and the expected user', () => {
-            const username = 'kevin@gmail.com'
-            const password = 'test123'
-            const expectedUser = testUsers[0]
-            return supertest(app)
-                .get(`/api/users/login/userAuth`)
-                .query({ username: username, password: password})
-                .expect(200)
-        })
-
-        it('Responds with 200 and the message if passwords do not match', () => {
-            const username = 'kevin@gmail.com'
-            const password = 'te123'
-            return supertest(app)
-                .get(`/api/users/login/userAuth`)
-                .query({ username: username, password: password})
-                .expect(200, 'password does not match')
-        })
-        
     })
 })

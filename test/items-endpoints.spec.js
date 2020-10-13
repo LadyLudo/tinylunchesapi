@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../src/app')
 const supertest = require('supertest')
-const { makeItemsArray } = require('./items.fixtures')
+const helpers = require('./test-helpers')
 
 let db
 
@@ -30,7 +30,7 @@ describe('GET /api/items', function() {
         })
     })
     context('Given that there are items in the database', () => {
-        const testItems = makeItemsArray()
+        const testItems = helpers.makeItemsArray()
 
         beforeEach('insert items', () => {
             return db
@@ -56,7 +56,7 @@ describe('GET /api/items/:id', () => {
         })
     })
     context('Given there are items in the database', () => {
-        const testItems = makeItemsArray()
+        const testItems = helpers.makeItemsArray()
         
         beforeEach('insert items', () => {
             return db  
@@ -128,7 +128,7 @@ describe('DELETE /api/items/id', () => {
     })
 
     context('Given there are items in the database', () => {
-        const testItems = makeItemsArray()
+        const testItems = helpers.makeItemsArray()
         
         beforeEach('insert items', () => {
             return db  
@@ -162,7 +162,7 @@ describe('PATCH /api/items/:id', () => {
     })
 
     context('Given there are items in the database', () => {
-        const testItems = makeItemsArray()
+        const testItems = helpers.makeItemsArray()
         
         beforeEach('insert items', () => {
             return db  

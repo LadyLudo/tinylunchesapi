@@ -123,34 +123,5 @@ usersRouter
         }
     })
 
-usersRouter
-    .route('/login/userAuth')
-    .all((req,res,next) => {
-        UsersService.userAuth(
-            req.app.get('db'),
-            req.query.username,
-            req.query.password
-        )
-            .then(user => {
-                if(!user) {
-                    return res.status(204).end()
-                }
-                res.user = user
-                next()
-            })
-            .catch(next)
-    })
-    .get((req,res,next) => {
-        bcrypt.compare(req.query.password, res.user.password, function(err, result) {
-            if(result == true){
-                res.json({
-            id: res.user.id,
-            password: res.user.password,
-                })
-            } else {
-                res.status(200).send('password does not match')
-            }
-})
-    })
 
 module.exports = usersRouter
