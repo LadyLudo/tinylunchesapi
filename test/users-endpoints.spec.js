@@ -10,6 +10,11 @@ describe('Users Endpoints', function() {
 
 let db
 
+const {
+    testItems,
+    testUsers,
+  } = helpers.makeItemsFixtures()
+
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
@@ -24,42 +29,7 @@ let db
 
     afterEach('cleanup', () => db('users').delete())
 
-describe('GET /api/users', function() {
-        context('Given no users', () => {
-            it('responds with 200 and an empty list', () => {
-                return supertest(app)
-                    .get('/api/users')
-                    .expect(200, [])
-            })
-        })
-        context('Given that there are users in the database', () => {
-            const testUsers = helpers.makeUsersArray()
-    
-            beforeEach('insert users', () => {
-                return db
-                    .into('users')
-                    .insert(testUsers)
-            })
-    
-            it('Responds with 200 and all of the users', () => {
-                return supertest(app)
-                    .get('/api/users')
-                    .expect(200, testUsers)
-            })
-    
-            
-        })
-    })
-
 describe('GET /api/users/id', () => {
-    context('Given no users', () => {
-        it('responds with 204', () => {
-            const user_id = 123456
-            return supertest(app)
-                .get(`/api/users/${user_id}`)
-                .expect(204)
-        })
-    })
     context('Given there are users in the database', () => {
         const testUsers = helpers.makeUsersArray()
         
@@ -74,6 +44,7 @@ describe('GET /api/users/id', () => {
             const expectedUser = testUsers[user_id -1]
             return supertest(app)
                 .get(`/api/users/${user_id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(200, expectedUser)
         })
         
@@ -96,6 +67,7 @@ describe('POST /api/users', () => {
             .then(postRes => 
                 supertest(app)
                     .get(`/api/users/${postRes.body.id}`)
+                    .set('Authorization', helpers.makeAuthHeader(newUser))
                     .expect(postRes.body)
                 )
     })
@@ -122,16 +94,6 @@ describe('POST /api/users', () => {
 })
 
 describe('DELETE /api/users/:user_id', () => {
-
-    context('Given no users', () => {
-        it('responds with 204', () => {
-            const user_id = 123456
-            return supertest(app)
-                .delete(`/api/users/${user_id}`)
-                .expect(204)
-        })
-    })
-
     context('Given there are users in the database', () => {
         const testUsers = helpers.makeUsersArray()
         
@@ -146,26 +108,19 @@ describe('DELETE /api/users/:user_id', () => {
             const expectedUsers = testUsers.filter(user => user.id !== idToRemove)
             return supertest(app)
                 .delete(`/api/users/${idToRemove}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(204)
                 .then(res =>
                     supertest(app)
-                        .get('/api/users')
-                        .expect(expectedUsers)
+                        .get(`/api/users/${idToRemove}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                        .expect(204)
                 )
         })
     })
 })
 
 describe('PATCH /api/users/:id', () => {
-    context('Given no users', () => {
-        it('resonds with 204', () => {
-            const id = 123456
-            return supertest(app)
-                .patch(`/api/users/${id}`)
-                .expect(204)
-        })
-    })
-
     context('Given there are users in the database', () => {
         const testUsers = helpers.makeUsersArray()
         
@@ -188,10 +143,12 @@ describe('PATCH /api/users/:id', () => {
             return supertest(app)
                 .patch(`/api/users/${idToUpdate}`)
                 .send(updatedUser)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(204)
                 .then(res => 
                     supertest(app)
                         .get(`/api/users/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                         .expect(200)
                 )
         })
@@ -201,6 +158,7 @@ describe('PATCH /api/users/:id', () => {
             return supertest(app)
                 .patch(`/api/users/${idToUpdate}`)
                 .send({ irrelevantField: 'foo' })
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(400, {
                     error: {
                         message: `Request body must contain either 'password' or 'username'`
@@ -224,10 +182,12 @@ describe('PATCH /api/users/:id', () => {
                     ...updatedUser,
                     fieldToIgnore: 'should not be in GET response'
                 })
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(204)
                 .then(res => 
                     supertest(app)
                         .get(`/api/users/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                         .expect(200)
                 )
         })

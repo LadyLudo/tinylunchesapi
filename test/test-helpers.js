@@ -56,8 +56,8 @@ function makeUsersArray() {
 
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
-    const testThings = makeItemsArray(testUsers)
-    return { testUsers, testThings }
+    const testItems = makeItemsArray(testUsers)
+    return { testUsers, testItems }
   }
 
   function cleanTables(db) {

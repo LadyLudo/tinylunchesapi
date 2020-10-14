@@ -1,21 +1,13 @@
 const express = require('express')
 const UsersService = require('./users-service')
 const bcrypt = require('bcrypt')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const usersRouter = express.Router()
 const jsonParser = express.json()
 
 usersRouter
     .route('/')
-    .get((req,res,next) => {
-        UsersService.getAllUsers(
-            req.app.get('db')
-        )
-            .then(users => {
-                res.json(users)
-            })
-            .catch(next)
-    })
     .post(jsonParser, (req,res,next) => {
         const { username, password } = req.body
         const newUser = { username, password }
@@ -47,8 +39,22 @@ usersRouter
 
     })
 
+usersRouter 
+    .route('/1/allUsers')
+    .all(requireAuth)
+    .get((req,res,next) => {
+        UsersService.getAllUsers(
+            req.app.get('db')
+        )
+            .then(users => {
+                res.json(users)
+            })
+            .catch(next)
+    })
+    
 usersRouter
     .route('/:id')
+    .all(requireAuth)
     .all((req,res,next) => {
         UsersService.getById(
             req.app.get('db'),
