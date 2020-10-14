@@ -54,10 +54,40 @@ function makeUsersArray() {
     ];
 }
 
+function makeCategoriesArray () {
+  return [
+    {
+      id: 1,
+      name: 'carbs'
+    },
+    {
+      id: 2,
+      name: 'protein'
+    },
+    {
+      id: 3,
+      name: 'vegetable'
+    },
+    {
+      id: 4,
+      name: 'fruit'
+    },
+    {
+      id: 5,
+      name: 'drink'
+    },
+    {
+      id: 6,
+      name: 'dessert'
+    }
+  ]
+}
+
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
     const testItems = makeItemsArray(testUsers)
-    return { testUsers, testItems }
+    const testCategories = makeCategoriesArray()
+    return { testUsers, testItems, testCategories }
   }
 
   function cleanTables(db) {
@@ -117,6 +147,7 @@ function makeItemsFixtures() {
       makeAuthHeader,
       makeItemsArray,
       makeUsersArray,
+      makeCategoriesArray,
       seedItemsTables,
       makeItemsFixtures,
       cleanTables,

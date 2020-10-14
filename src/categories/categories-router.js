@@ -27,7 +27,7 @@ CategoriesRouter
             }
         }
 
-        CategoryService.insertCategory(
+        CategoriesService.insertCategory(
             req.app.get('db'),
             newCategory
           )
@@ -60,7 +60,7 @@ CategoriesRouter
     .get((req, res, next) => {
         res.json({
             id: res.category.id,
-            item_name: res.category.name
+            name: res.category.name
         })
     })
     .delete((req, res, next) => {
