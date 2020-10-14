@@ -19,6 +19,19 @@ usersRouter
                 })
             }
         }
+        const passwordError = UsersService.validatePassword(password)
+        if (passwordError)
+            return res.status(400).json({ error: passwordError })
+
+        UsersService.hasUserWithUserName(
+            req.app.get('db'),
+            username
+        )
+            .then(hasUserWithUserName => {
+                if (hasUserWithUserName)
+                    return res.status(400).json({ error: `Username already taken` })
+            })
+
         bcrypt.hash(newUser.password, 10)
             .then((hash) => {
                 const hashedUser = {
@@ -32,7 +45,10 @@ usersRouter
                     .then(user => {
                       res
                         .status(201)
-                        .json(user)
+                        .json({
+                            username: user.username,
+                            id: user.id
+                        })
                     })
                     .catch(next)
             })
@@ -40,7 +56,7 @@ usersRouter
     })
 
 usersRouter 
-    .route('/1/allUsers')
+    .route('/all/allUsers')
     .all(requireAuth)
     .get((req,res,next) => {
         UsersService.getAllUsers(

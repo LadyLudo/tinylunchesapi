@@ -14,6 +14,7 @@ const {
     testItems,
     testUsers,
   } = helpers.makeItemsFixtures()
+  const testUser = testUsers[0]
 
     before('make knex instance', () => {
         db = knex({
@@ -52,25 +53,13 @@ describe('GET /api/users/id', () => {
 })
 
 describe('POST /api/users', () => {
-    it('create a user, responding with 201 and the new user', () => {
-        const newUser = {
-            username: 'john@gmail.com',
-            password: 'test123',
-        }
-        return supertest(app)
-            .post('/api/users')
-            .send(newUser)
-            .expect(201)
-            .expect(res => {
-                expect(res.body.username).to.eql(newUser.username)
-            })
-            .then(postRes => 
-                supertest(app)
-                    .get(`/api/users/${postRes.body.id}`)
-                    .set('Authorization', helpers.makeAuthHeader(newUser))
-                    .expect(postRes.body)
-                )
-    })
+    context(`User Validation`, () => {
+        beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
 
     const requiredFields = ['password', 'username']
     requiredFields.forEach(field => {
@@ -90,6 +79,59 @@ describe('POST /api/users', () => {
         })
     })
     })
+
+    it(`responds 400 'Password must be longer than 8 characters' when empty password`, () => {
+        const userShortPassword = {
+            username: 'test user name',
+            password: '1234567',
+        }
+        return supertest(app)
+            .post('/api/users')
+            .send(userShortPassword)
+            .expect(400, { error: `Password must be longer than 8 characters` })
+    })
+    it(`responds 400 'Password must be less than 72 characters' when long password`, () => {
+        const userLongPassword = {
+            username: 'test user name',
+            password: '*'.repeat(73),
+        }
+        return supertest(app)
+            .post('/api/users')
+            .send(userLongPassword)
+            .expect(400, { error: `Password must be less than 72 characters` })
+    })
+    it(`responds 400 error when password starts with spaces`, () => {
+        const userPasswordStartsSpaces = {
+            username: 'test user name',
+            password: ' 1Aa!2Bb@',
+        }
+        return supertest(app)
+            .post('/api/users')
+            .send(userPasswordStartsSpaces)
+            .expect(400, { error: `Password must not start or end with empty spaces` })
+    })
+    it(`responds with 400 error when password ends with spaces`, () => {
+        const userPasswordEndsSpaces = {
+            username: 'test user name',
+            password: '1Aa!2Bb@ ',
+        }
+        return supertest(app)
+            .post('/api/users')
+            .send(userPasswordEndsSpaces)
+            .expect(400, { error: `Password must not start or end with empty spaces` })
+    })
+    it(`responds 400 'User name already taken' when user_name isn't unique`, () => {
+        const duplicateUser = {
+            username: testUser.username,
+            password: '11AAaa!!',
+        }
+        return supertest(app)
+            .post('/api/users')
+            .send(duplicateUser)
+            .expect(400, { error: `Username already taken` })
+    })
+
+})
     
 })
 
