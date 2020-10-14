@@ -4,6 +4,10 @@ const app = require('../src/app')
 const supertest = require('supertest')
 const helpers = require('./test-helpers')
 
+describe('Items Endpoints', function () {
+
+
+
 let db
 
 before('make knex instance', () => {
@@ -226,4 +230,5 @@ describe('PATCH /api/items/:id', () => {
                 )
         })
     })
+})
 })
