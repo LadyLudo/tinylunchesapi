@@ -9,6 +9,7 @@ const usersRouter = require('./users/users-router')
 const itemsRouter = require('./items/items-router')
 const authRouter = require('./auth/auth-router')
 const CategoriesRouter = require('./categories/categories-router')
+const itemCategoryRouter = require('./item-to-category/item-to-category-router')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/items', itemsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/categories', CategoriesRouter)
+app.use('/api/itemCategory', itemCategoryRouter)
 
 app.get('/', (req,res) => {
     res.send('Hello, world!')
