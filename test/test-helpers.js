@@ -83,18 +83,62 @@ function makeCategoriesArray () {
   ]
 }
 
+function makeItemCategoryArray () {
+  return [
+  {
+    id: 1,
+    item_id: 1,
+    category_id: 1,
+    user_id: 1
+  },
+  {
+    id: 2,
+    item_id: 2,
+    category_id: 2,
+    user_id: 1
+  },
+  {
+    id: 3,
+    item_id: 3,
+    category_id: 3,
+    user_id: 1
+  },
+  {
+    id: 4,
+    item_id: 4,
+    category_id: 4,
+    user_id: 1
+  },
+  {
+    id: 5,
+    item_id: 5,
+    category_id: 5,
+    user_id: 1
+  },
+  {
+    id: 6,
+    item_id: 6,
+    category_id: 6,
+    user_id: 1
+  },
+  ]
+}
+
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
     const testItems = makeItemsArray(testUsers)
     const testCategories = makeCategoriesArray()
-    return { testUsers, testItems, testCategories }
+    const testItemCategories = makeItemCategoryArray()
+    return { testUsers, testItems, testCategories, testItemCategories }
   }
 
   function cleanTables(db) {
     return db.raw(
       `TRUNCATE
         items,
-        users
+        users,
+        categories,
+        item_to_category
         RESTART IDENTITY CASCADE`
     )
   }
@@ -113,11 +157,13 @@ function makeItemsFixtures() {
       )
   }
 
-  function seedItemsTables(db, users, items) {
+  function seedItemsTables(db, users, items, categories, itemCategories) {
     // use a transaction to group the queries and auto rollback on any failure
     return db.transaction(async trx => {
       await seedUsers(trx, users)
       await trx.into('items').insert(items)
+      await trx.into('categories').insert(categories)
+      await trx.into('item_to_category').insert(itemCategories)
       // update the auto sequence to match the forced id values
       await trx.raw(
         `SELECT setval('items_id_seq', ?)`,
@@ -138,7 +184,9 @@ function makeItemsFixtures() {
     return db.raw(
       `TRUNCATE
         items,
-        users
+        users,
+        categories,
+        item_to_category
         RESTART IDENTITY CASCADE`
     )
   }
@@ -152,4 +200,5 @@ function makeItemsFixtures() {
       makeItemsFixtures,
       cleanTables,
       seedUsers,
+      makeItemCategoryArray,
   }

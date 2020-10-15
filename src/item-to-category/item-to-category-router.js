@@ -47,7 +47,11 @@ itemCategoryRouter
             req.params.id
         )
             .then(itemCategory => {
-            
+                if(!itemCategory) {
+                    return res.status(404).json({
+                        error: { message: `Item to Category entry doesn't exist` }
+                    })
+                }
                 res.itemCategory = itemCategory
                 next()
     
