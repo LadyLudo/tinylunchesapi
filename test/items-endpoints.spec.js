@@ -10,6 +10,11 @@ describe('Items Endpoints', function () {
 
 let db
 
+const {
+    testItems,
+    testUsers,
+  } = helpers.makeItemsFixtures()
+
 before('make knex instance', () => {
     db = knex({
         client: 'pg',
@@ -22,7 +27,7 @@ after('disconnect from db', () => db.destroy())
 
 before('clean the table', () => db('items').delete())
 
-afterEach('cleanup', () => db('items').delete())
+afterEach('cleanup', () => helpers.cleanTables(db))
 
 
 describe('GET /api/items', function() {
@@ -35,6 +40,13 @@ describe('GET /api/items', function() {
     })
     context('Given that there are items in the database', () => {
         const testItems = helpers.makeItemsArray()
+
+        beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
 
         beforeEach('insert items', () => {
             return db
@@ -60,13 +72,19 @@ describe('GET /api/items/:id', () => {
         })
     })
     context('Given there are items in the database', () => {
-        const testItems = helpers.makeItemsArray()
         
+        beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
         beforeEach('insert items', () => {
             return db  
                 .into('items')
                 .insert(testItems)
         })
+        
 
         it('Responds with 200 and the expected item', () => {
             const id = 2
@@ -80,9 +98,16 @@ describe('GET /api/items/:id', () => {
 })
 
 describe('POST /api/items', () => {
+    beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
     it('creates an item, responding with 201 and the new item', () => {
         const newItem = {
-            item_name: 'blueberries'
+            item_name: 'blueberries',
+            user_id: 1
         }
         return supertest(app)
             .post('/api/items')
@@ -98,10 +123,11 @@ describe('POST /api/items', () => {
                 )
     })
 
-    const requiredFields = ['item_name']
+    const requiredFields = ['item_name', 'user_id']
     requiredFields.forEach(field => {
         const newItem = {
-            item_name: 'bread'
+            item_name: 'bread',
+            user_id: 1
         }
         
     it(`responds with 400 and an error when the ${field} is missing in the request body`, () => {
@@ -134,6 +160,12 @@ describe('DELETE /api/items/id', () => {
     context('Given there are items in the database', () => {
         const testItems = helpers.makeItemsArray()
         
+        beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
         beforeEach('insert items', () => {
             return db  
                 .into('items')
@@ -166,7 +198,12 @@ describe('PATCH /api/items/:id', () => {
     })
 
     context('Given there are items in the database', () => {
-        const testItems = helpers.makeItemsArray()
+        beforeEach('insert users', () =>
+          helpers.seedUsers(
+            db,
+            testUsers,
+          )
+        )
         
         beforeEach('insert items', () => {
             return db  

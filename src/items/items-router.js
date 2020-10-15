@@ -16,8 +16,8 @@ ItemsRouter
             .catch(next)
     })
     .post(jsonParser, (req,res,next) => {
-        const { item_name } = req.body
-        const newItem = { item_name }
+        const { item_name, user_id } = req.body
+        const newItem = { item_name, user_id }
 
         for (const [key, value] of Object.entries(newItem)) {
             if (value == null) {
@@ -58,10 +58,7 @@ ItemsRouter
             .catch(next)
     })
     .get((req, res, next) => {
-        res.json({
-            id: res.item.id,
-            item_name: res.item.item_name
-        })
+        res.json(res.item)
     })
     .delete((req, res, next) => {
         ItemsService.deleteItem(
