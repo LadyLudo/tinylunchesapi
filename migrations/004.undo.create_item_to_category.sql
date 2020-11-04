@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS item_to_category;
