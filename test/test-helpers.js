@@ -104,40 +104,95 @@ function makeUsersArray() {
     ];
 }
 
-function makeCategoriesArray () {
+function makePantryItemsArray () {
   return [
-    {
-      id: 1,
-      name: 'carbs'
-    },
-    {
-      id: 2,
-      name: 'protein'
-    },
-    {
-      id: 3,
-      name: 'vegetable'
-    },
-    {
-      id: 4,
-      name: 'fruit'
-    },
-    {
-      id: 5,
-      name: 'drink'
-    },
-    {
-      id: 6,
-      name: 'dessert'
-    }
-  ]
+      {
+          id: 1,
+          item_name: 'pasta',
+          user_id: 1,
+          category_1: 'carb',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      },
+      {
+          id: 2,
+          item_name: 'chicken',
+          user_id: 1,
+          category_1: 'protein',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      },
+      {
+          id: 3,
+          item_name: 'salad',
+          user_id: 1,
+          category_1: 'vegetable',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      },
+      {
+          id: 4,
+          item_name: 'bananas',
+          user_id: 1,
+          category_1: 'fruit',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      },
+      {
+          id: 5,
+          item_name: 'pepsi',
+          user_id: 1,
+          category_1: 'drink',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      },
+      {
+          id: 6,
+          item_name: 'brownie',
+          user_id: 1,
+          category_1: 'dessert',
+          category_2: null,
+          category_3: null,
+          category_4: null,
+          category_5: null,
+          category_6: null,
+          category_7: null,
+          quantity: 3
+      }
+  ];
 }
 
 
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
     const testItems = makeItemsArray(testUsers)
-    return { testUsers, testItems}
+    const testPantry = makePantryItemsArray()
+    return { testUsers, testItems, testPantry }
   }
 
 
@@ -180,7 +235,8 @@ function makeItemsFixtures() {
     return db.raw(
       `TRUNCATE
         items,
-        users
+        users,
+        pantry
         RESTART IDENTITY CASCADE`
     )
   }
@@ -193,4 +249,5 @@ function makeItemsFixtures() {
       makeItemsFixtures,
       cleanTables,
       seedUsers,
+      makePantryItemsArray,
   }
