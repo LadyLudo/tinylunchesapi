@@ -152,7 +152,7 @@ describe('POST /api/pantry', () => {
         })
 })
 
-describe.only('DELETE /api/pantry/:id', () => {
+describe('DELETE /api/pantry/:id', () => {
     context('Given no items', () => {
         it('responds with 404', () => {
             const id = 123456
@@ -165,10 +165,9 @@ describe.only('DELETE /api/pantry/:id', () => {
         const testPantry = helpers.makePantryItemsArray()
 
         beforeEach('insert users', () => {
-            helpers.seedUsers(
-                db,
-                testUsers,
-            )
+            return db
+                .into('users')
+                .insert(testUsers)
         })
         beforeEach('insert items', () => {
             return db
@@ -204,10 +203,9 @@ describe('PATCH /api/pantry/:id', () => {
         const testPantry = helpers.makePantryItemsArray()
 
         beforeEach('insert users', () => {
-            helpers.seedUsers(
-                db,
-                testUsers,
-            )
+            return db
+                .into('users')
+                .insert(testUsers)
         })
         beforeEach('insert items', () => {
             return db
