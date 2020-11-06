@@ -16,16 +16,26 @@ ItemsRouter
             .catch(next)
     })
     .post(jsonParser, (req,res,next) => {
-        const { item_name, user_id } = req.body
-        const newItem = { item_name, user_id }
+        const { user_id, item_name, category_1, category_2, category_3, category_4, category_5, category_6, category_7 } = req.body
+        const newItem = { user_id, item_name, category_1, category_2, category_3, category_4, category_5, category_6, category_7 }
 
-        for (const [key, value] of Object.entries(newItem)) {
-            if (value == null) {
-                return res.status(400).json({
-                    error: { message: `Missing '${key}' in request body` }
-                })
-            }
+        
+        if (user_id == null) {
+            return res.status(400).json({
+                error: { message: `Missing 'user_id' in request body` }
+            })
         }
+        if (item_name == null) {
+            return res.status(400).json({
+                error: { message: `Missing 'item_name' in request body` }
+            })
+        }
+        if (category_1 == null) {
+            return res.status(400).json({
+                error: { message: `Missing 'category_1' in request body` }
+            })
+        }
+        
 
         ItemsService.insertItem(
             req.app.get('db'),
@@ -71,8 +81,8 @@ ItemsRouter
             .catch(next)
     })
     .patch(jsonParser, (req,res,next) => {
-        const { item_name } = req.body
-        const itemToUpdate = { item_name }
+        const { item_name, category_1, catgory_2, category_3, category_4, category_5, category_6, category_7 } = req.body
+        const itemToUpdate = { item_name, category_1, catgory_2, category_3, category_4, category_5, category_6, category_7 }
 
         const numberOfValues = Object.values(itemToUpdate).filter(Boolean).length
         if (numberOfValues === 0) {

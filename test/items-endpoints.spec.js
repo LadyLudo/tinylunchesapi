@@ -106,8 +106,15 @@ describe('POST /api/items', () => {
         )
     it('creates an item, responding with 201 and the new item', () => {
         const newItem = {
+            user_id: 1,
             item_name: 'blueberries',
-            user_id: 1
+            category_1: 'fruit',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null,
         }
         return supertest(app)
             .post('/api/items')
@@ -123,11 +130,18 @@ describe('POST /api/items', () => {
                 )
     })
 
-    const requiredFields = ['item_name', 'user_id']
+    const requiredFields = ['item_name', 'user_id', 'category_1']
     requiredFields.forEach(field => {
         const newItem = {
+            user_id: 1,
             item_name: 'bread',
-            user_id: 1
+            category_1: 'carb',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null,
         }
         
     it(`responds with 400 and an error when the ${field} is missing in the request body`, () => {

@@ -4,23 +4,25 @@ const jwt = require('jsonwebtoken')
 function makeUsersArray() {
     return [
         {
+
+            creation_date: '2020-08-23T00:00:00.000Z',
             id: 1,
             username: 'kevin@gmail.com',
-            password: 'test123',
-            creation_date: '2020-08-23T00:00:00.000Z'
+            password: 'test123'
             
         },
         {
+            creation_date: '2020-08-23T00:00:00.000Z',
             id: 2,
             username: 'katy@gmail.com',
-            password: 'test123',
-            creation_date: '2020-08-23T00:00:00.000Z'
+            password: 'test123'
+            
         },
         {
+            creation_date: '2020-08-23T00:00:00.000Z',
             id: 3,
             username: 'susan@gmail.com',
-            password: 'test123',
-            creation_date: '2020-08-23T00:00:00.000Z'
+            password: 'test123'
         },
     ]
   }
@@ -30,32 +32,74 @@ function makeUsersArray() {
         {
             id: 1,
             item_name: 'pasta',
-            user_id: 1
+            user_id: 1,
+            category_1: 'carb',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         },
         {
             id: 2,
             item_name: 'chicken',
-            user_id: 1
+            user_id: 1,
+            category_1: 'protein',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         },
         {
             id: 3,
             item_name: 'salad',
-            user_id: 1
+            user_id: 1,
+            category_1: 'vegetable',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         },
         {
             id: 4,
             item_name: 'bananas',
-            user_id: 1
+            user_id: 1,
+            category_1: 'fruit',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         },
         {
             id: 5,
             item_name: 'pepsi',
-            user_id: 1
+            user_id: 1,
+            category_1: 'drink',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         },
         {
             id: 6,
             item_name: 'brownie',
-            user_id: 1
+            user_id: 1,
+            category_1: 'dessert',
+            category_2: null,
+            category_3: null,
+            category_4: null,
+            category_5: null,
+            category_6: null,
+            category_7: null
         }
     ];
 }
@@ -89,65 +133,13 @@ function makeCategoriesArray () {
   ]
 }
 
-function makeItemCategoryArray () {
-  return [
-  {
-    id: 1,
-    item_id: 1,
-    category_id: 1,
-    user_id: 1
-  },
-  {
-    id: 2,
-    item_id: 2,
-    category_id: 2,
-    user_id: 1
-  },
-  {
-    id: 3,
-    item_id: 3,
-    category_id: 3,
-    user_id: 1
-  },
-  {
-    id: 4,
-    item_id: 4,
-    category_id: 4,
-    user_id: 1
-  },
-  {
-    id: 5,
-    item_id: 5,
-    category_id: 5,
-    user_id: 1
-  },
-  {
-    id: 6,
-    item_id: 6,
-    category_id: 6,
-    user_id: 1
-  },
-  ]
-}
 
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
     const testItems = makeItemsArray(testUsers)
-    const testCategories = makeCategoriesArray()
-    const testItemCategories = makeItemCategoryArray()
-    return { testUsers, testItems, testCategories, testItemCategories }
+    return { testUsers, testItems}
   }
 
-  function cleanTables(db) {
-    return db.raw(
-      `TRUNCATE
-        items,
-        users,
-        categories,
-        item_to_category
-        RESTART IDENTITY CASCADE`
-    )
-  }
 
   function seedUsers(db, users) {
     const preppedUsers = users.map(user => ({
@@ -168,8 +160,6 @@ function makeItemsFixtures() {
     return db.transaction(async trx => {
       await seedUsers(trx, users)
       await trx.into('items').insert(items)
-      await trx.into('categories').insert(categories)
-      await trx.into('item_to_category').insert(itemCategories)
       // update the auto sequence to match the forced id values
       await trx.raw(
         `SELECT setval('items_id_seq', ?)`,
@@ -190,9 +180,7 @@ function makeItemsFixtures() {
     return db.raw(
       `TRUNCATE
         items,
-        users,
-        categories,
-        item_to_category
+        users
         RESTART IDENTITY CASCADE`
     )
   }
@@ -201,10 +189,8 @@ function makeItemsFixtures() {
       makeAuthHeader,
       makeItemsArray,
       makeUsersArray,
-      makeCategoriesArray,
       seedItemsTables,
       makeItemsFixtures,
       cleanTables,
       seedUsers,
-      makeItemCategoryArray,
   }
