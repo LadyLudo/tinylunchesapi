@@ -187,12 +187,54 @@ function makePantryItemsArray () {
   ];
 }
 
+function makeSavedLunchesArray () {
+    return [
+      {
+        id: 1,
+        user_id: 1,
+        title: 'Marlowe Lunch',
+        items: ['Chicken Sandwich', 'Milk', 'Corn']
+      },
+      {
+        id: 2,
+        user_id: 1,
+        title: 'Theo Lunch',
+        items: ['Spaghetti and Meatballs', 'Chocolate Milk', 'Cookie']
+      },
+      {
+        id: 3,
+        user_id: 1,
+        title: 'Kevin Lunch',
+        items: ['Watermelon', 'Juice', 'Cookie']
+      },
+      {
+        id: 4,
+        user_id: 2,
+        title: 'Katy Lunch',
+        items: ['Lunchable: turkey sandwich', 'Grapes', 'Milk']
+      },
+      {
+        id: 5,
+        user_id: 3,
+        title: 'Glen Lunch',
+        items: ['Chicken Soup', 'Cottage Cheese', 'Grapes']
+      },
+      {
+        id: 6,
+        user_id: 3,
+        title: 'Scout Lunch',
+        items: ['Dog food', 'Dog food', 'Water']
+      }
+    ]
+}
+
 
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
     const testItems = makeItemsArray(testUsers)
     const testPantry = makePantryItemsArray()
-    return { testUsers, testItems, testPantry }
+    const testSaved = makeSavedLunchesArray()
+    return { testUsers, testItems, testPantry, testSaved }
   }
 
 
@@ -236,7 +278,8 @@ function makeItemsFixtures() {
       `TRUNCATE
         items,
         users,
-        pantry
+        pantry,
+        saved_lunches
         RESTART IDENTITY CASCADE`
     )
   }
@@ -250,4 +293,5 @@ function makeItemsFixtures() {
       cleanTables,
       seedUsers,
       makePantryItemsArray,
+      makeSavedLunchesArray,
   }

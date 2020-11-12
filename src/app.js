@@ -9,6 +9,7 @@ const usersRouter = require('./users/users-router')
 const itemsRouter = require('./items/items-router')
 const authRouter = require('./auth/auth-router')
 const PantryRouter = require('./pantry/pantry-router')
+const SavedLunchRouter = require('./saved_lunches/saved_lunches-router')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/items', itemsRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/pantry', PantryRouter)
+app.use('/api/savedlunches', SavedLunchRouter)
 
 app.get('/', (req,res) => {
     res.send('Hello, world!')

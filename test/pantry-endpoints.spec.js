@@ -69,7 +69,7 @@ describe('GET /api/pantry/:id', () => {
         })
     })
     context('Given there are items in the database', () => {
-        beforeEach('inser users', () => {
+        beforeEach('insert users', () => {
             helpers.seedUsers(
                 db,
                 testUsers,
