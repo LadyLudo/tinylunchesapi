@@ -109,4 +109,26 @@ PantryRouter
 
     })
 
+PantryRouter
+    .route('/users/:user_id')
+    .all((req, res, next) => {
+        PantryService.getByUserId(
+            req.app.get('db'),
+            req.params.user_id
+        )
+            .then(item => {
+                if(!item[0]) {
+                    return res.status(404).json({
+                        error: { message: `Item doesn't exist` }
+                    })
+                }
+                res.item = item
+                next()
+            })
+            .catch(next)
+    })
+    .get((req, res, next) => {
+        res.send(res.item)
+    })
+
 module.exports = PantryRouter

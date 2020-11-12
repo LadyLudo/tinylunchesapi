@@ -243,4 +243,36 @@ describe('PATCH /api/pantry/:id', () => {
     })
 })
 
+describe('GET /api/pantry/user/:user_id', () => {
+    context('Given no items', () => {
+        it('responds with 404', () => {
+            const user_id = 123456
+            return supertest(app)
+                .get(`/api/pantry/users/${user_id}`)
+                .expect(404)
+        })
+    })
+    context('Given there are items in the database', () => {
+        beforeEach('insert users', () => {
+            return db
+                .into('users')
+                .insert(testUsers)
+        })
+        beforeEach('insert items', () => {
+            return db   
+                .into('pantry')
+                .insert(testPantry)
+        })
+
+        it('Responds with 200 and the expected items', () => {
+            const user_id = 1
+            const expectedItems = testPantry.filter(item => item.user_id === user_id)
+            return supertest(app)
+                .get(`/api/pantry/users/${user_id}`)
+                .expect(200, expectedItems)
+        })
+    })
+})
+
+
 })

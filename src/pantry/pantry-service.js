@@ -24,6 +24,13 @@ const PantryService = {
             .first()
     },
 
+    getByUserId(knex, user_id) {
+        return knex
+            .from('pantry')
+            .select('*')
+            .where('user_id', user_id)
+    },
+
     deleteItem(knex, id) {
         return knex('pantry')
             .where({id})
