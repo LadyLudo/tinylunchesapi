@@ -9,8 +9,8 @@ const jsonParser = express.json()
 usersRouter
     .route('/')
     .post(jsonParser, (req,res,next) => {
-        const { username, password } = req.body
-        const newUser = { username, password }
+        const { username, password, display_name } = req.body
+        const newUser = { username, password, display_name }
 
         for (const [key, value] of Object.entries(newUser)) {
             if (value == null) {
@@ -36,7 +36,8 @@ usersRouter
             .then((hash) => {
                 const hashedUser = {
                     username: newUser.username,
-                    password: hash  
+                    password: hash,
+                    display_name: newUser.display_name  
                 }
                 UsersService.insertUser(
                     req.app.get('db'),

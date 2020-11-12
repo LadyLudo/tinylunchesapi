@@ -65,7 +65,8 @@ describe('POST /api/users', () => {
     requiredFields.forEach(field => {
         const newUser = {
             password: 'test123',
-            username: 'john@gmail.com'
+            username: 'john@gmail.com',
+            display_name: 'John'
         }
         
     it(`responds with 400 and an error when the ${field} is missing in the request body`, () => {
@@ -84,6 +85,7 @@ describe('POST /api/users', () => {
         const userShortPassword = {
             username: 'test user name',
             password: '1234567',
+            display_name: 'test'
         }
         return supertest(app)
             .post('/api/users')
@@ -94,6 +96,7 @@ describe('POST /api/users', () => {
         const userLongPassword = {
             username: 'test user name',
             password: '*'.repeat(73),
+            display_name: 'test'
         }
         return supertest(app)
             .post('/api/users')
@@ -104,6 +107,7 @@ describe('POST /api/users', () => {
         const userPasswordStartsSpaces = {
             username: 'test user name',
             password: ' 1Aa!2Bb@',
+            display_name: 'test'
         }
         return supertest(app)
             .post('/api/users')
@@ -114,6 +118,7 @@ describe('POST /api/users', () => {
         const userPasswordEndsSpaces = {
             username: 'test user name',
             password: '1Aa!2Bb@ ',
+            display_name: 'test'
         }
         return supertest(app)
             .post('/api/users')
@@ -124,6 +129,7 @@ describe('POST /api/users', () => {
         const duplicateUser = {
             username: testUser.username,
             password: '11AAaa!!',
+            display_name: 'test'
         }
         return supertest(app)
             .post('/api/users')
@@ -176,7 +182,8 @@ describe('PATCH /api/users/:id', () => {
             const idToUpdate = 2
             const updatedUser = {
                 password: 'updatedtest123',
-                username: 'johnjr@gmail.com'
+                username: 'johnjr@gmail.com',
+                display_name: 'john jr.'
             }
             const expectedUser = {
                 ...testUsers[idToUpdate -1],
