@@ -1,5 +1,6 @@
 const express = require('express')
 const PantryService = require('./pantry-service')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const PantryRouter = express.Router()
 const jsonParser = express.json()
@@ -7,6 +8,7 @@ const jsonParser = express.json()
 
 PantryRouter
     .route('/')
+    .all(requireAuth)
     .get((req, res, next) => {
         PantryService.getAllItems(
             req.app.get('db')
@@ -55,6 +57,7 @@ PantryRouter
 
 PantryRouter
     .route('/:id')
+    .all(requireAuth)
     .all((req, res, next) => {
         PantryService.getById(
             req.app.get('db'),
@@ -111,6 +114,7 @@ PantryRouter
 
 PantryRouter
     .route('/users/:user_id')
+    .all(requireAuth)
     .all((req, res, next) => {
         PantryService.getByUserId(
             req.app.get('db'),

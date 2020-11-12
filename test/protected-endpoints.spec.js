@@ -39,6 +39,66 @@ describe('Protected Endpoints', function() {
         path: '/api/users/1',
         method: supertest(app).get,
     },
+    {
+      name: 'GET /api/pantry/',
+      path: '/api/pantry/',
+      method: supertest(app).get,
+    },
+    {
+      name: 'GET /api/pantry/:id',
+      path: '/api/pantry/1',
+      method: supertest(app).get,
+    },
+    {
+      name: 'GET /api/pantry/users/:user_id',
+      path: '/api/pantry/users/1',
+      method: supertest(app).get,
+    },
+    {
+      name: 'POST/api/pantry/',
+      path: '/api/pantry/',
+      method: supertest(app).post,
+    },
+    {
+      name: 'DELETE /api/pantry/:id',
+      path: '/api/pantry/1',
+      method: supertest(app).delete,
+    },
+    {
+      name: 'PATCH /api/pantry/:id',
+      path: '/api/pantry/1',
+      method: supertest(app).patch,
+    },
+    {
+      name: 'GET /api/savedLunches',
+      path: '/api/savedLunches/',
+      method: supertest(app).get,
+    },
+    {
+      name: 'GET /api/savedLunches/:id',
+      path: '/api/savedLunches/1',
+      method: supertest(app).get,
+    },
+    {
+      name: 'GET /api/savedLunches/users/:user_id',
+      path: '/api/savedLunches/users/1',
+      method: supertest(app).get,
+    },
+    {
+      name: 'POST/api/savedLunches/',
+      path: '/api/savedLunches/',
+      method: supertest(app).post,
+    },
+    {
+      name: 'DELETE /api/savedLunches/:id',
+      path: '/api/savedLunches/1',
+      method: supertest(app).delete,
+    },
+    {
+      name: 'PATCH /api/pantry/:id',
+      path: '/api/savedLunches/1',
+      method: supertest(app).patch,
+    },
 
     ]
 

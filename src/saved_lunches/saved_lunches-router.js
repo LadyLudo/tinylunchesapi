@@ -1,11 +1,13 @@
 const express = require('express')
 const SavedLunchService = require('./saved_lunches-service')
+const { requireAuth } = require('../middleware/jwt-auth')
 
 const SavedLunchRouter = express.Router()
 const jsonParser = express.json()
 
 SavedLunchRouter
     .route('/')
+    .all(requireAuth)
     .get((req, res, next) => {
         SavedLunchService.getAllLists(
             req.app.get('db')
@@ -42,6 +44,7 @@ SavedLunchRouter
 
 SavedLunchRouter
     .route('/:id')
+    .all(requireAuth)
     .all((req, res, next) => {
         SavedLunchService.getById(
             req.app.get('db'),
@@ -97,6 +100,7 @@ SavedLunchRouter
 
 SavedLunchRouter
     .route('/users/:user_id')
+    .all(requireAuth)
     .all((req,res,next) => {
         SavedLunchService.getByUserId(
             req.app.get('db'),
