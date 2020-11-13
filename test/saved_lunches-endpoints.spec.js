@@ -29,9 +29,16 @@ afterEach('cleanup', () => helpers.cleanTables(db))
 
 describe('GET /api/savedLunches', function () {
     context('Given no lists', () => {
+        beforeEach('insert users', () => 
+        helpers.seedUsers(
+            db,
+            testUsers,
+        )
+    )
         it('responds with 200 and an empty list', () => {
             return supertest(app)
                 .get('/api/savedLunches')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(200, [])
         })
     })
@@ -51,6 +58,7 @@ describe('GET /api/savedLunches', function () {
         it('Responds with 200 and all of the Lists', () => {
             return supertest(app)
                 .get('/api/savedLunches')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(200, testSaved)
         })
     })
@@ -58,10 +66,17 @@ describe('GET /api/savedLunches', function () {
 
 describe('GET /api/savedLunches/:id', () => {
     context('Given no lists', () => {
+        beforeEach('insert users', () => 
+        helpers.seedUsers(
+            db,
+            testUsers,
+        )
+    )
         it('responds with 404', () => {
             const id = 123456
             return supertest(app)
                 .get(`/api/savedLunches/${id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(404)
         })
     })
@@ -83,6 +98,7 @@ describe('GET /api/savedLunches/:id', () => {
             const expectedList = testSaved[id -1]
             return supertest(app)
                 .get(`/api/savedLunches/${id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(200, expectedList)
         })
     })
@@ -103,6 +119,7 @@ describe('POST /api/savedLunches/', () => {
         }
         return supertest(app)
             .post('/api/savedLunches')
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .send(newList)
             .expect(201)
             .expect(res => {
@@ -111,35 +128,44 @@ describe('POST /api/savedLunches/', () => {
             .then(postRes => 
                 supertest(app)
                     .get(`/api/savedLunches/${postRes.body.id}`)
+                    .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                     .expect(postRes.body)
                 )
         })
 
-        const requiredFields = ['user_id', 'title', 'items' ]
-        requiredFields.forEach(field => {
-            const newList = {
-                user_id: 1,
-                title: 'test list',
-                items: ['banana', 'banana', 'banana' ]
-            }
-            it(`responds with 400 and an error when the ${field} is missing in the request body`, () => {
-                delete newList[field]
+        // const requiredFields = ['user_id', 'title', 'items' ]
+        // requiredFields.forEach(field => {
+        //     const newList = {
+        //         user_id: 1,
+        //         title: 'test list',
+        //         items: ['banana', 'banana', 'banana' ]
+        //     }
+        //     it(`responds with 400 and an error when the ${field} is missing in the request body`, () => {
+        //         delete newList[field]
 
-                return supertest(app)
-                .post('/api/savedLunches')
-                .send(newList)
-                .expect(400, {
-                    error: { message: `Missing '${field}' in request body` }
-                })
-            })
-        })
+        //         return supertest(app)
+        //         .post('/api/savedLunches')
+        //         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+        //         .send(newList)
+        //         .expect(400, {
+        //             error: { message: `Missing '${field}' in request body` }
+        //         })
+        //     })
+        // })
 })
 describe('DELETE /api/savedLunches/:id', () => {
     context('Given no items', () => {
+        beforeEach('insert users', () => 
+        helpers.seedUsers(
+            db,
+            testUsers,
+        )
+    )
         it('responds with 404', () => {
             const id = 123456
             return supertest(app)
                 .delete(`/api/savedLunches/${id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(404)
         })
     })
@@ -160,10 +186,12 @@ describe('DELETE /api/savedLunches/:id', () => {
             const expectedLists = testSaved.filter(list => list.id !== idToRemove)
             return supertest(app)
                 .delete(`/api/savedLunches/${idToRemove}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(204)
                 .then(res => 
                     supertest(app)
                         .get('/api/savedLunches')
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                         .expect(expectedLists)
                     )
         })
@@ -171,10 +199,17 @@ describe('DELETE /api/savedLunches/:id', () => {
 })
 describe('PATCH /api/savedLunches/:id', () => {
     context('Given no items', () => {
+        beforeEach('insert users', () => 
+        helpers.seedUsers(
+            db,
+            testUsers,
+        )
+    )
         it('responds with 404', () => {
             const id = 123456
             return supertest(app)
                 .patch(`/api/pantry/${id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(404)
         })
     })
@@ -202,11 +237,13 @@ describe('PATCH /api/savedLunches/:id', () => {
             }
             return supertest(app)
                 .patch(`/api/savedLunches/${idToUpdate}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .send(updatedList)
                 .expect(204)
                 .then( res => 
                     supertest(app)
                         .get(`/api/savedLunches/${idToUpdate}`)
+                        .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                         .expect(expectedList)
                     )
         })
@@ -215,10 +252,17 @@ describe('PATCH /api/savedLunches/:id', () => {
 
 describe('GET /api/savedLunches/user/:user_id', () => {
     context('Given no lists', () => {
+        beforeEach('insert users', () => 
+        helpers.seedUsers(
+            db,
+            testUsers,
+        )
+    )
         it('responds with 404', () => {
             const user_id = 123456
             return supertest(app)
                 .get(`/api/savedLunches/users/${user_id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(404)
         })
     })
@@ -238,6 +282,7 @@ describe('GET /api/savedLunches/user/:user_id', () => {
             const expectedLists = testSaved.filter(list => list.user_id === user_id)
             return supertest(app)
                 .get(`/api/savedLunches/users/${user_id}`)
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
                 .expect(200, expectedLists)
         })
     })

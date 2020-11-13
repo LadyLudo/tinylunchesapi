@@ -4,7 +4,7 @@ const app = require('../src/app')
 const supertest = require('supertest')
 const helpers = require('./test-helpers')
 
-describe.only('Pantry Endpoints', function () {
+describe('Pantry Endpoints', function () {
 
 let db
 
