@@ -6,6 +6,13 @@ const ItemsService = {
             .orderBy('id')
     },
 
+    searchAllItems(knex, string) {
+        return knex
+            .select('*')
+            .from('items')
+            .where('item_name', 'like', `%${string}%`)
+    },
+
     insertItem(knex, newItem) {
         return knex
             .insert(newItem)

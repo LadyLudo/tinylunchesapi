@@ -104,4 +104,17 @@ ItemsRouter
             .catch(next)
     })
 
+ItemsRouter
+    .route('/search/item/')
+    .get((req, res, next) => {
+        ItemsService.searchAllItems(
+            req.app.get('db'),
+            req.query.string
+        )
+        .then(result => {
+            res.status(200).send(result)
+        })
+        .catch(next)
+    })
+
 module.exports = ItemsRouter
