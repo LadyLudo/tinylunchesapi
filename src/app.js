@@ -17,22 +17,7 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
 app.use(morgan(morganOption));
 app.use(helmet());
-const whitelist = [
-  "https://tiny-lunches-app.vercel.app",
-  "http://localhost:3000",
-];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || origin === undefined) {
-      callback(null, true);
-    } else {
-      console.log({ origin });
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
