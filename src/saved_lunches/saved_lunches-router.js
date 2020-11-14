@@ -10,7 +10,7 @@ SavedLunchRouter.route("/")
   .get((req, res, next) => {
     SavedLunchService.getAllLists(req.app.get("db"))
       .then((lists) => {
-        res.json([lists]);
+        res.json(lists);
       })
       .catch(next);
   })
