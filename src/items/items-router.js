@@ -117,4 +117,17 @@ ItemsRouter
         .catch(next)
     })
 
+// ItemsRouter
+//     .route('/search/both/')
+//     .get((req, res, next) => {
+//         ItemsService.searchBothTables(
+//             req.app.get('db'),
+//             req.query.string
+//         )
+//         .then(result => {
+//             res.status(200).send(result)
+//         })
+//         .catch(next)
+//     })
+
 module.exports = ItemsRouter

@@ -231,7 +231,7 @@ function makeSavedLunchesArray () {
 
 function makeItemsFixtures() {
     const testUsers = makeUsersArray()
-    const testItems = makeItemsArray(testUsers)
+    const testItems = makeItemsArray()
     const testPantry = makePantryItemsArray()
     const testSaved = makeSavedLunchesArray()
     return { testUsers, testItems, testPantry, testSaved }

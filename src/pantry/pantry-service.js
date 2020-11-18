@@ -6,6 +6,13 @@ const PantryService = {
             .orderBy('id')
     },
 
+    searchAllItems(knex, string) {
+        return knex
+            .select('*')
+            .from('pantry')
+            .where('item_name', 'like', `%${string}%`)
+    },
+
     insertItem(knex, newItem) {
         return knex
             .insert(newItem)

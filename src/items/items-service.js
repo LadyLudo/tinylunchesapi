@@ -13,6 +13,13 @@ const ItemsService = {
             .where('item_name', 'like', `%${string}%`)
     },
 
+    // searchBothTables(knex, string) {
+    //     return knex('items')
+    //         .join('pantry', 'pantry.item_name')
+    //         .select('*')
+    //         .where('item_name', 'like', `%${string}%`)
+    // },
+
     insertItem(knex, newItem) {
         return knex
             .insert(newItem)

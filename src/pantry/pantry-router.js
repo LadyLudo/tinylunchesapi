@@ -135,4 +135,18 @@ PantryRouter
         res.send(res.item)
     })
 
+PantryRouter   
+    .route('/search/item')
+    .all(requireAuth)
+    .get((req, res, next) => {
+        PantryService.searchAllItems(
+            req.app.get('db'),
+            req.query.string
+        )
+        .then(result => {
+            res.status(200).send(result)
+        })
+        .catch(next)
+    })
+
 module.exports = PantryRouter

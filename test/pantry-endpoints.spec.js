@@ -314,5 +314,47 @@ describe('GET /api/pantry/user/:user_id', () => {
     })
 })
 
+describe('GET /search/item/', () => {
+    context('Given no items', () => {
+        beforeEach('insert users', () =>
+        helpers.seedUsers(
+          db,
+          testUsers,
+        )
+      )
+        it('Responds with an empty list', () => {
+            const itemSearchString = 'shrtingkshd'
+            return supertest(app)
+                .get('/api/pantry/search/item/')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .query({string: itemSearchString})
+                .expect(200, [])
+        })
+    })
+    context('Given there are items in the database', () => {
+        beforeEach('insert users', () =>
+        helpers.seedUsers(
+          db,
+          testUsers,
+        )
+      )
+      
+      beforeEach('insert items', () => {
+        return db
+            .into('pantry')
+            .insert(testPantry)
+    })
+        it('Responds with 200 and the desired item', () => {
+            const itemSearchString = 'pasta'
+            const expectedItem = testPantry[0]
+            return supertest(app)
+                .get('/api/pantry/search/item/')
+                .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
+                .query({string: itemSearchString})
+                .expect(200, [expectedItem])
+        })
+    })
+})
+
 
 })

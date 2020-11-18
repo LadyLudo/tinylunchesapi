@@ -30,6 +30,7 @@ before('clean the table', () => db('items').delete())
 afterEach('cleanup', () => helpers.cleanTables(db))
 
 
+
 describe('GET /api/items', function() {
     context('Given no items', () => {
         it('responds with 200 and an empty list', () => {
@@ -282,4 +283,38 @@ describe('PATCH /api/items/:id', () => {
         })
     })
 })
+describe('GET /search/item/', () => {
+    context('Given no items', () => {
+        it('Responds with an empty list', () => {
+            const itemSearchString = 'shrtingkshd'
+            return supertest(app)
+                .get('/api/items/search/item/')
+                .query({string: itemSearchString})
+                .expect(200, [])
+        })
+    })
+    context('Given there are items in the database', () => {
+        beforeEach('insert users', () =>
+        helpers.seedUsers(
+          db,
+          testUsers,
+        )
+      )
+      
+      beforeEach('insert items', () => {
+          return db  
+              .into('items')
+              .insert(testItems)
+      })
+        it('Responds with 200 and the desired item', () => {
+            const itemSearchString = 'pasta'
+            const expectedItem = testItems[0]
+            return supertest(app)
+                .get('/api/items/search/item/')
+                .query({string: itemSearchString})
+                .expect(200, [expectedItem])
+        })
+    })
+})
+
 })
