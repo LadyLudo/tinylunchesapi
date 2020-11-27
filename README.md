@@ -1,26 +1,41 @@
-# Express Boilerplate!
+CUTTHROAT LOSERS
 
-This is a boilerplate project used for starting new projects!
+Live App: https://tiny-lunches-app.vercel.app/
 
-## Set up
+APP Repo: https://github.com/Kevindavis5454/tiny-lunches-app.git
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+Summary:
+This API allows for the creation, reading, updating and deletion of lunch items and data. You can store lunch items, categories, quantities, and entire lunches.
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+Endpoints:
+/contest_to_user : Allows the association of a particular contest to a user.
+Accepts for Input: user_id , contest_id
+Outputs: json
 
-## Scripts
+/auth : Allows for authentication and access to protected endpoints.
+Accepts for Input: username, password
+outputs: json
 
-Start the application `npm start`
+/items : Allows for the storage of individual items on a master list without quantities
+Accepts for Input: user_id, item_name, category_1, category_2, category_3, category_4, category_5, category_6, category_7
+outputs: json
 
-Start nodemon for the application `npm run dev`
+/pantry : Allows for the storage of individual items on a master list with quantities
+Accepts for Input: user_id, item_name, category_1, category_2, category_3, category_4, category_5, category_6, category_7,quantity
+outputs: json
 
-Run the tests `npm test`
+/savedlunches : Allows for the storage of complete lunches
+Accepts for Input: user_id, title, items (array)
+outputs: json
 
-## Deploying
+/users : Allows for the storage of user data
+Accepts for Input: username, password, display_name
+outputs: json
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+This app is built with the following languages, frameworks, and libraries:
+
+Front end: React, JSX, CSS, React-to-Print
+
+Back end: Node.js, Express, Knex, Mocha, Chai
+
+Database: PostgresSQL
