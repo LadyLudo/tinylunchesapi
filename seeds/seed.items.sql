@@ -14,4 +14,11 @@ VALUES
     ('Chocolate Milk', 1, 'drink', null, null, null, null, null, null),
     ('Juice', 1, 'drink', null, null, null, null, null, null),
     ('Brownie', 1, 'dessert', null, null, null, null, null, null),
-    ('Cookie', 1, 'dessert', null, null, null, null, null, null);
+    ('Brownie', 1, 'dessert', 'carb', 'vegetable', 'fruit', 'drink', 'protein', 'combo'),
+    ('Little Bites Muffins', 1, 'dessert', 'carb', 'combo', null, null, null, null),
+    ('Applesauce', 1, 'fruit', null, null, null, null, null, null),
+    ('Banana', 1, 'fruit', null, null, null, null, null, null),
+    ('Chicken Pita Pocket', 1, 'carb', 'protein', 'combo', null, null, null, null),
+    ('Chips', 1, 'carb', null, null, null, null, null, null),
+    ('Protein Shake', 1, 'protein', 'drink', 'combo', null, null, null, null),
+    ('Oranges', 1, 'fruit', null, null, null, null, null, null);
