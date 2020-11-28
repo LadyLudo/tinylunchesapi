@@ -26,7 +26,7 @@ app.use("/api/pantry", PantryRouter);
 app.use("/api/savedlunches", SavedLunchRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.send("Welcome to the Tiny Lunches API");
 });
 
 app.use(function errorHandler(error, req, res, next) {

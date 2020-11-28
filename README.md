@@ -1,4 +1,4 @@
-CUTTHROAT LOSERS
+APP Name: Tiny Lunches
 
 Live App: https://tiny-lunches-app.vercel.app/
 
