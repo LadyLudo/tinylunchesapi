@@ -141,10 +141,9 @@ PantryRouter.route("/users/:user_id")
     PantryService.getByUserId(req.app.get("db"), req.params.user_id)
       .then((item) => {
         if (!item[0]) {
-          return [];
-          //   return res.status(404).json({
-          //     error: { message: `No Pantry Items exist for this User` },
-          //   });
+          return res.status(404).json({
+            error: { message: `No Pantry Items exist for this User` },
+          });
         }
         res.item = item;
         next();
